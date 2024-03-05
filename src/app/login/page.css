@@ -1,0 +1,43 @@
+#paper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.8); /* Cambia el último valor para ajustar la opacidad */
+    border-radius: 12px;
+    text-align: center;
+}
+
+body {
+    background-image: url('/images/loginfondo.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.colors {
+    background-color: rgba(12, 32, 96, 0.677);
+}
+
+.boton:hover {
+    background-color: rgb(12, 32, 96); /* Green */
+    color: white;
+
+}
+#paper label.Mui-focused {
+    color: rgb(12, 32, 96);
+}
+ 
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: rgb(12, 32, 96);
+}
+
+#gymgptLogo {
+    width: 35%;
+    margin: 0 auto;
+    padding: 5px;
+}
