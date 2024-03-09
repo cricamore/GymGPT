@@ -34,10 +34,12 @@
 #input-container {
     display: flex;
     flex-direction: row;
-    padding: auto;
-    flex-grow: 1; 
-    width: 100%;
-    align-self: flex-end;
+    padding: 30px;
+    /* flex-grow: 1;  */
+    /* width: 100%; */
+    /* background-color: brown; */
+    height: 100%;
+    align-items: end;
 }
 
 #button {
@@ -59,11 +61,11 @@
     border-color:  rgb(12, 32, 96);
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 10px 30px;
     text-align: center;
-    border-radius: 10%;
-    font-size: 20px;
-    align-self:baseline; 
+    border-radius: 20px;
+    font-size: 16px;
+    /* align-self: baseline;  */
     margin-left: 10px;
     cursor: pointer;
 }
@@ -74,7 +76,7 @@
     margin: 0 auto;
     border-radius: 10px;
     background-color: white;
-    align-self: flex-end; 
+    align-self: flex-end;
 }
 
 @media (max-width: 600px) {

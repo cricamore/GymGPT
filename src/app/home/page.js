@@ -76,7 +76,7 @@ function SendMessageForm({ onSendMessage }) {
           onSubmit={handleSendMessage}
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
-           <div id="input-container">
+          <div id="input-container">
           <TextField
             id="outlined-basic"
             value={newMessage}
