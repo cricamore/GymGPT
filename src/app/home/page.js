@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import {
   Grid,
@@ -13,38 +13,50 @@ import {
 import "./page.css";
 export default function Home() {
   const [messages, setMessages] = useState([]);
+  const [responses, setResponses] = useState([]);
   const handleSendMessage = (newMessage) => {
     setMessages([...messages, newMessage]);
   };
+  const handleResponse = (newResponse) => {
+    setResponses([...responses, newResponse]);
+  }
+  
 
+  console.log("Respuestaa, ", responses)
+  
   return (
     <>
       <head>
         <title>Home</title>
       </head>
 
-      <Grid container>
-        <Grid item xs={12} sm={8}>
-          <Paper id="paper">
-            <img id="imghome" src={"/images/homefondo.jpg"} />
-            <div id="button-container">
-              <Button id="button">Perder Peso</Button>
-              <Button id="button">Ganar Masa Muscular</Button>
-              <Button id="button">Tonificar</Button>
-            </div>
-          </Paper>
+      <body>
+        <Grid container>
+          <Grid item xs={12} sm={8}>
+            <Paper id="paper">
+              <img id="imghome" src={"/images/homefondo.jpg"} />
+              <div id="button-container">
+                <Button id="button">Perder Peso</Button>
+                <Button id="button">Ganar Masa Muscular</Button>
+                <Button id="button">Tonificar</Button>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Paper id="paper">
+              
+              <ChatMessages messages={messages} responses={responses} />
+              <SendMessageForm onSendMessage={handleSendMessage} onSendResponse={handleResponse}/>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Paper id="paper">
-            <ChatMessages messages={messages} />
-            <SendMessageForm onSendMessage={handleSendMessage} />
-          </Paper>
-        </Grid>
-      </Grid>
+      </body>
     </>
   );
 }
-function ChatMessages({ messages }) {
+
+function ChatMessages({ messages, responses }) {
+  console.log("alooo, ", responses)
   return (
     <>
       <h2 className="h2">Chat</h2>
@@ -52,12 +64,17 @@ function ChatMessages({ messages }) {
         {messages.map((message, index) => (
           <ListItem key={index}>{message}</ListItem>
         ))}
+        {responses.map((response, index) => (
+          <ListItem key={index}>{response}</ListItem>
+        ))}
       </List>
     </>
   );
 }
-function SendMessageForm({ onSendMessage }) {
+
+function SendMessageForm({ onSendMessage, onSendResponse }) {
   const [newMessage, setNewMessage] = React.useState("");
+  const [responses, setResponses] = React.useState("");
 
   const handleNewMessageChange = (event) => {
     setNewMessage(event.target.value);
@@ -66,15 +83,41 @@ function SendMessageForm({ onSendMessage }) {
   const handleSendMessage = (event) => {
     event.preventDefault();
     onSendMessage(newMessage);
+    onSendResponse(responses);
+    sendMessage(newMessage);
     setNewMessage("");
   };
 
+  async function sendMessage(message) {
+    try {
+      const response = await fetch('http://localhost:3000/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message }),
+      })
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const newResponses = data.message;
+        setResponses(newResponses);
+        console.log("Respuesta: ", newResponses)
+      }else{
+        throw new Error(data.message)
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   return (
     <>
-     
         <form
           onSubmit={handleSendMessage}
-          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+          style={{ display: "fle!x", flexDirection: "column", height: "100%" }}
         >
           <div id="input-container">
           <TextField
@@ -92,9 +135,9 @@ function SendMessageForm({ onSendMessage }) {
             Enviar
           </Button>
           </div>
-        </form>
-        
+        </form>   
       
     </>
   );
 }
+
