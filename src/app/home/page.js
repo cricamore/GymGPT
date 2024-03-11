@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Paper,
@@ -11,19 +10,36 @@ import {
 } from "@mui/material";
 
 import "./page.css";
+
 export default function Home() {
   const [messages, setMessages] = useState([]);
-  const [responses, setResponses] = useState([]);
-  const handleSendMessage = (newMessage) => {
-    setMessages([...messages, newMessage]);
-  };
-  const handleResponse = (newResponse) => {
-    setResponses([...responses, newResponse]);
-  }
-  
 
-  console.log("Respuestaa, ", responses)
-  
+  const handleSendMessage = async (newMessage) => {
+    try {
+      const userMessage = { text: newMessage, type: "user" };
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+      const response = await fetch('http://localhost:3000/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: newMessage }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const botResponse = { text: data.message, type: "bot" };
+        setMessages((prevMessages) => [...prevMessages, botResponse]);
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
     <>
       <head>
@@ -33,7 +49,7 @@ export default function Home() {
       <body>
         <Grid container>
           <Grid item xs={12} sm={8}>
-            <Paper id="paper">
+            <Paper className="paper">
               <img id="imghome" src={"/images/homefondo.jpg"} />
               <div id="button-container">
                 <Button id="button">Perder Peso</Button>
@@ -43,10 +59,9 @@ export default function Home() {
             </Paper>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Paper id="paper">
-              
-              <ChatMessages messages={messages} responses={responses} />
-              <SendMessageForm onSendMessage={handleSendMessage} onSendResponse={handleResponse}/>
+            <Paper id="chatPaper" className="paper">
+              <ChatMessages messages={messages} />
+              <SendMessageForm onSendMessage={handleSendMessage} />
             </Paper>
           </Grid>
         </Grid>
@@ -55,26 +70,23 @@ export default function Home() {
   );
 }
 
-function ChatMessages({ messages, responses }) {
-  console.log("alooo, ", responses)
+function ChatMessages({ messages }) {
   return (
     <>
       <h2 className="h2">Chat</h2>
       <List>
         {messages.map((message, index) => (
-          <ListItem key={index}>{message}</ListItem>
-        ))}
-        {responses.map((response, index) => (
-          <ListItem key={index}>{response}</ListItem>
+          <ListItem key={index} className={message.type}>
+            {message.text}
+          </ListItem>
         ))}
       </List>
     </>
   );
 }
 
-function SendMessageForm({ onSendMessage, onSendResponse }) {
-  const [newMessage, setNewMessage] = React.useState("");
-  const [responses, setResponses] = React.useState("");
+function SendMessageForm({ onSendMessage }) {
+  const [newMessage, setNewMessage] = useState("");
 
   const handleNewMessageChange = (event) => {
     setNewMessage(event.target.value);
@@ -83,43 +95,16 @@ function SendMessageForm({ onSendMessage, onSendResponse }) {
   const handleSendMessage = (event) => {
     event.preventDefault();
     onSendMessage(newMessage);
-    onSendResponse(responses);
-    sendMessage(newMessage);
     setNewMessage("");
   };
 
-  async function sendMessage(message) {
-    try {
-      const response = await fetch('http://localhost:3000/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message }),
-      })
-
-      const data = await response.json();
-
-      if (response.ok) {
-        const newResponses = data.message;
-        setResponses(newResponses);
-        console.log("Respuesta: ", newResponses)
-      }else{
-        throw new Error(data.message)
-      }
-
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-
   return (
     <>
-        <form
-          onSubmit={handleSendMessage}
-          style={{ display: "fle!x", flexDirection: "column", height: "100%" }}
-        >
-          <div id="input-container">
+      <form
+        onSubmit={handleSendMessage}
+        style={{ display: "flex", flexDirection: "column", height: "100%" }}
+      >
+        <div id="input-container">
           <TextField
             id="outlined-basic"
             value={newMessage}
@@ -134,9 +119,8 @@ function SendMessageForm({ onSendMessage, onSendResponse }) {
           >
             Enviar
           </Button>
-          </div>
-        </form>   
-      
+        </div>
+      </form>   
     </>
   );
 }
