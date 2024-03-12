@@ -19,7 +19,7 @@ export default function Home() {
       const userMessage = { text: newMessage, type: "user" };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-      const response = await fetch('http://localhost:3000/api/chat', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
