@@ -1,10 +1,30 @@
+'use client';
 import { AppBar, Button, Container, Paper, TextField, Toolbar } from '@mui/material'
 import React from 'react'
-import Image from "next/image";
+import { useAuth } from '../../context/AuthContext'
+import { router } from 'next/router'
 import "./page.css";
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 export default function Login() {
+  const { login, loginWithGoogle } = useAuth();
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const submitLogin = (e) => {
+    e.preventDefault();
+    return async () => {
+      try {
+        const response = await login(email, password);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+      router.push("/");
+    }
+  }
+
   return (
     <>
       <head>
@@ -35,16 +55,16 @@ export default function Login() {
                 <p> ¿No tienes una cuenta? <a href='/register'>Regístrate</a> </p>
               </Grid2>
               <Grid2 item>
-                <TextField id="outlined-basic" label="Correo electrónico" variant="outlined" fullWidth />
+                <TextField value={email} onChange={(e) => setEmail(e.target.value)} id="outlined-basic" label="Correo electrónico" variant="outlined" fullWidth />
               </Grid2>
               <Grid2 item>
-                <TextField id="outlined-basic" label="Contraseña" variant="outlined" type='password' fullWidth />
+                <TextField value={password} onChange={(e) => setPassword(e.target.value)} id="outlined-basic" label="Contraseña" variant="outlined" type='password' fullWidth />
               </Grid2>
               <Grid2 item>
-                <Button className='colors boton' variant="contained" color="primary" fullWidth> Iniciar Sesión </Button>
+                <Button type='button' onClick={submitLogin} className='colors boton' variant="contained" color="primary" fullWidth> Iniciar Sesión </Button>
               </Grid2>
               <Grid2 item>
-                <a>Restablecer contraseña</a>
+                <span>¿No tienes cuenta? <a style={{cursor: 'pointer', color: '#1f51b5'}}>Regístrate</a></span>
               </Grid2>
               
             </Grid2>
