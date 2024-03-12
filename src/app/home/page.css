@@ -66,6 +66,13 @@ body {
 
 }
 
+.bot {
+    text-align: start;
+}
+.user {
+    text-align: end;
+}
+
 #button {
     background-color: rgb(12, 32, 96); 
     border-color:  rgb(12, 32, 96);
