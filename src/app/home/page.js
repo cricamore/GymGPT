@@ -11,7 +11,7 @@ export default function Home() {
       const userMessage = { text: newMessage, type: "user" };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiUrl = '/api/chat';
 
       const response = await fetch(apiUrl, {
         method: "POST",
