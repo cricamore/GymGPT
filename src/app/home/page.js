@@ -1,28 +1,20 @@
 "use client";
-import React, { useState } from "react";
-import {
-  Grid,
-  Paper,
-  List,
-  ListItem,
-  TextField,
-  Button,
-} from "@mui/material";
+import React, { useState, useRef } from "react";
+import { Grid, Paper, List, ListItem, TextField, Button } from "@mui/material";
 
 import "./page.css";
 
 export default function Home() {
-  const [messages, setMessages] = useState([]);
-
+  const [messages, setMessages] = useState([ {text: 'Soy un entrenador virtual experto en rutinas fitness, para entrenar todos los grupos musculares, también puedo crear planes de entrenamiento según los propósitos principales que son perder peso, ganar masa muscular, tonificar', type: "bot" }]);
   const handleSendMessage = async (newMessage) => {
     try {
       const userMessage = { text: newMessage, type: "user" };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-      const response = await fetch('http://localhost:3000/api/chat', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/api/chat", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ message: newMessage }),
       });
@@ -32,11 +24,13 @@ export default function Home() {
       if (response.ok) {
         const botResponse = { text: data.message, type: "bot" };
         setMessages((prevMessages) => [...prevMessages, botResponse]);
-      } else {
+        
+        
+    } else {
         throw new Error(data.message);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
@@ -52,15 +46,36 @@ export default function Home() {
             <Paper className="paper">
               <img id="imghome" src={"/images/homefondo.jpg"} />
               <div id="button-container">
-                <Button id="button">Perder Peso</Button>
-                <Button id="button">Ganar Masa Muscular</Button>
-                <Button id="button">Tonificar</Button>
+                <Button
+                  id="button"
+                  onClick={() => handleSendMessage("Rutina para perder peso")}
+                >
+                  Perder Peso
+                </Button>
+                <Button
+                  id="button"
+                  onClick={() =>
+                    handleSendMessage("Rutina para ganar masa muscular")
+                  }
+                >
+                  Ganar Masa Muscular
+                </Button>
+                <Button
+                  id="button"
+                  onClick={() => handleSendMessage("Rutina para tonificar")}
+                >
+                  Tonificar
+                </Button>
               </div>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Paper id="chatPaper" className="paper">
-              <ChatMessages messages={messages} />
+              <h2 className="h2">Chat</h2>
+              <div id = "boxMessage"  >
+                <ChatMessages messages={messages} />
+                
+              </div>
               <SendMessageForm onSendMessage={handleSendMessage} />
             </Paper>
           </Grid>
@@ -73,13 +88,13 @@ export default function Home() {
 function ChatMessages({ messages }) {
   return (
     <>
-      <h2 className="h2">Chat</h2>
       <List>
         {messages.map((message, index) => (
-          <ListItem key={index} className={message.type}>
+          <ListItem id="message" key={index} className={message.type}>
             {message.text}
           </ListItem>
         ))}
+         
       </List>
     </>
   );
@@ -120,8 +135,7 @@ function SendMessageForm({ onSendMessage }) {
             Enviar
           </Button>
         </div>
-      </form>   
+      </form>
     </>
   );
 }
-
