@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
+import * as marked from 'marked';
 import { Grid, Paper, List, ListItem, TextField, Button } from "@mui/material";
 
 import "./page.css";
@@ -93,7 +94,7 @@ function ChatMessages({ messages }) {
       <List>
         {messages.map((message, index) => (
           <ListItem id="message" key={index} className={message.type}>
-            {message.text}
+            <div dangerouslySetInnerHTML={{ __html: marked.parse(message.text) }} />
           </ListItem>
         ))}
          
