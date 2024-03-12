@@ -1,95 +1,57 @@
+import { AppBar, Button, Container, Paper, TextField, Toolbar } from '@mui/material'
+import React from 'react'
 import Image from "next/image";
-import styles from "./page.module.css";
+import "./login.css";
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
-export default function Home() {
+export default function Login() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
+    <>
+      <head>
+        <title>Login</title>
+      </head>
+
+      <body>
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+          {/* <AppBar className='colors' position='fixed'>
+            <Toolbar>
+              <Image
+                src={"/images/GymGPT.png"}
+                width={71}
+                height={71}
+              />
+            </Toolbar>
+          </AppBar> */}
         </div>
-      </div>
+        <div id='divImage' style={{marginTop: "80px"}}>
+          <Paper id='paper' elevation={6}>
+            <img
+              id='gymgptLogo'
+              src={"/images/GymGPT.png"}/>
+            <h1>¡Bienvenida!</h1>
+            <p>Cumple tus objetivos con la ayuda de un entrenador virtual potenciado con inteligencia artificial.</p>
+            <Grid2 container direction="column" spacing={2}>
+            <Grid2 item>
+                <p> ¿No tienes una cuenta? <a href='/register'>Regístrate</a> </p>
+              </Grid2>
+              <Grid2 item>
+                <TextField id="outlined-basic" label="Correo electrónico" variant="outlined" fullWidth />
+              </Grid2>
+              <Grid2 item>
+                <TextField id="outlined-basic" label="Contraseña" variant="outlined" type='password' fullWidth />
+              </Grid2>
+              <Grid2 item>
+                <Button className='colors boton' variant="contained" color="primary" fullWidth> Iniciar Sesión </Button>
+              </Grid2>
+              <Grid2 item>
+                <a>Restablecer contraseña</a>
+              </Grid2>
+              
+            </Grid2>
+          </Paper>  
+        </div>
+      </body>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+    </>
+  )
 }
