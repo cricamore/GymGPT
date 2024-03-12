@@ -77,7 +77,6 @@ export default function Home() {
               <h2 className="h2">Chat</h2>
               <div id = "boxMessage"  >
                 <ChatMessages messages={messages} />
-                
               </div>
               <SendMessageForm onSendMessage={handleSendMessage} />
             </Paper>
@@ -93,11 +92,10 @@ function ChatMessages({ messages }) {
     <>
       <List>
         {messages.map((message, index) => (
-          <ListItem id="message" key={index} className={message.type}>
-            <div dangerouslySetInnerHTML={{ __html: marked.parse(message.text) }} />
+          <ListItem id="message" key={index}>
+            <div style={{textAlign: (index%2==0) ? 'start' : 'end', width: "100%"}} dangerouslySetInnerHTML={{ __html: marked.parse(message.text) }} />
           </ListItem>
         ))}
-         
       </List>
     </>
   );

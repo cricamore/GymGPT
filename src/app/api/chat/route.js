@@ -38,13 +38,21 @@ export async function POST(request) {
     const body = await request.json();
     const userMessage = body.message;
     
-    if (!isRelatedToExercise(userMessage)) {
-        return NextResponse.json({ message: "Lo siento, solo puedo responder a temas relacionados con rutinas de ejercicio." })
-    }
+    // if (!isRelatedToExercise(userMessage)) {
+    //     return NextResponse.json({ message: "Lo siento, solo puedo responder a temas relacionados con rutinas de ejercicio." })
+    // }
     
-    const prompt = "Write a story about a magic backpack."   // prompt de prueba
+    const prompt = `Eres un entrenador profesional y tu trabajo es entregar rutinas de 
+    entrenamiento a las personas con diferentes finalidades, a continuación vas a recibir 
+    una petición de un cliente el cual solicita una rutina de entrenamiento y 
+    deberás responder acorde a sus necesidades, el mensaje estará envuelto en 
+    llaves, si no está relacionado con rutinas de entrenamiento, deberás responder 
+    que solo tienes permitido dar rutinas y no contestar más. La petición del cliente es:
+    ` + '{' + userMessage + '}';   
+    // prompt de prueba
 
-    const result = await model.generateContent(userMessage); // generacion de texto de una vez
+
+    const result = await model.generateContent(prompt); // generacion de texto de una vez
     //const result = await chat.sendMessage(userMessage);
 
     // respuesta de gemini
